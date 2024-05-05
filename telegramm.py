@@ -1,8 +1,11 @@
 import asyncio
 import logging
+from aiogram import F
+from random import randint
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.enums.dice_emoji import DiceEmoji
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
@@ -74,5 +77,38 @@ async def main():
 @dp.message(Command("кубик"))
 async def cmd_dice(message: types.Message):
     await message.answer_dice(emoji="🎲")
+
+@dp.message(Command("random10"))
+async def cmd_random(message: types.Message):
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+        text="жми если хочешь много денег",
+        callback_data="random_value")
+    )
+    await message.answer(
+        "я напишу рандомное число от 1 до 10",
+        reply_markup=builder.as_markup()
+    )
+    
+@dp.callback_query(F.data == "random_value")
+async def send_random_value(callback: types.CallbackQuery):
+    await callback.message.answer(str(randint(1, 10)))
+
+@dp.message(Command("игровые_новости"))
+async def cmd_test1(message: types.Message):
+    await message.answer('t.me/GamerNewer')
+    
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    kb = [
+        [types.KeyboardButton(text="С пюрешкой")],
+        [types.KeyboardButton(text="Без пюрешки")]
+    ]
+    keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
+    await message.answer("Как подавать котлеты?", reply_markup=keyboard)
+
+
 if __name__ == "__main__":
     asyncio.run(main())
+
+
