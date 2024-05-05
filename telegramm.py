@@ -98,17 +98,37 @@ async def send_random_value(callback: types.CallbackQuery):
 async def cmd_test1(message: types.Message):
     await message.answer('t.me/GamerNewer')
     
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
+@dp.message(Command("реганье"))
+async def cmd_реганье(message: types.Message):
     kb = [
-        [types.KeyboardButton(text="С пюрешкой")],
-        [types.KeyboardButton(text="Без пюрешки")]
+        [types.KeyboardButton(text="гитхаб")],
+        [types.KeyboardButton(text="почта")],
+        [types.KeyboardButton(text="ютуб")],
+        [types.KeyboardButton(text="овервульф")],
+        [types.KeyboardButton(text="вк")]
     ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
-    await message.answer("Как подавать котлеты?", reply_markup=keyboard)
+    await message.answer("куда хотите зарегистрироватся?", reply_markup=keyboard)
+    
+@dp.message(F.text.lower() == "гитхаб")
+async def with_puree(message: types.Message):
+    await message.reply("https://github.com/")
+    
+@dp.message(F.text.lower() == "почта")
+async def with_puree(message: types.Message):
+    await message.reply("https://www.google.com/intl/ru/gmail/about/")
+    
+@dp.message(F.text.lower() == "ютуб")
+async def with_puree(message: types.Message):
+    await message.reply("https://www.youtube.com/account_advanced?hl=ru")
 
+@dp.message(F.text.lower() == "овервульф")
+async def with_puree(message: types.Message):
+    await message.reply("https://stackoverflow.com/")
+    
+@dp.message(F.text.lower() == "вк")
+async def with_puree(message: types.Message):
+    await message.reply("https://vk.com/")
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
