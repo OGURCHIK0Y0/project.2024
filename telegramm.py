@@ -18,7 +18,7 @@ bot = Bot(token="7044627094:AAFQklyTsJfBgctPyEEuUmV55PM9L3Qud90")
 dp = Dispatcher()
 
 
-@dp.message(Command("menu"))
+@dp.message(Command("start"))
 async def start_handler(message: types.Message):
     await message.answer(text.greet.format(name=message.from_user.full_name), reply_markup=kb.menu)
 
@@ -29,10 +29,6 @@ async def menu(message: types.Message):
     await message.answer(text.menu, reply_markup=kb.menu)
 
 
-# Хэндлер на команду /start
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer("Привет меня зовут !лучший бот Данила!я умею разговаритвать и занимать твое время.Пиши команды :\n/мячик , /дароу , /гениальные_новости_нск , /казино ,/дартс , /бовлинг , /кино , /деньги , /твич , /кубик , /реальные деньги , /random_value , /random10")
 
 @dp.callback_query(F.data == "ball")
 async def cmd_dice(callback: types.CallbackQuery):
@@ -151,3 +147,6 @@ async def with_puree(message: types.Message):
     
 if __name__ == "__main__":
     asyncio.run(main())
+
+
+
