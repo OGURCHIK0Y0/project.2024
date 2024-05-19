@@ -107,14 +107,14 @@ async def cmd_random(message: types.Message):
     
 @dp.callback_query(F.data == "random_value")
 async def send_random_value(callback: types.CallbackQuery):
-    await callback.message.answer(str(randint(1, 10)))
+    await callback.message.answer(str(randint(1, 100)))
 
 @dp.message(Command("игровые_новости"))
 async def cmd_test1(message: types.Message):
     await message.answer('t.me/GamerNewer')
     
-@dp.message(Command("реганье"))
-async def cmd_реганье(message: types.Message):
+@dp.callback_query(F.data == "ZX") 
+async def cmd_реганье(callback: types.CallbackQuery):
     kb = [
         [types.KeyboardButton(text="гитхаб")],
         [types.KeyboardButton(text="почта")],
@@ -123,7 +123,7 @@ async def cmd_реганье(message: types.Message):
         [types.KeyboardButton(text="вк")]
     ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
-    await message.answer("куда хотите зарегистрироватся?", reply_markup=keyboard)
+    await callback.message.answer("куда хотите зарегистрироватся?", reply_markup=keyboard)
     
 @dp.message(F.text.lower() == "гитхаб")
 async def with_puree(message: types.Message):
@@ -147,6 +147,5 @@ async def with_puree(message: types.Message):
     
 if __name__ == "__main__":
     asyncio.run(main())
-
 
 
