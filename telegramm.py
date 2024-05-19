@@ -7,6 +7,9 @@ from aiogram.filters.command import Command
 from aiogram.enums.dice_emoji import DiceEmoji
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+import kb
+import text
+
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
 # Объект бота
@@ -14,15 +17,31 @@ bot = Bot(token="7044627094:AAFQklyTsJfBgctPyEEuUmV55PM9L3Qud90")
 # Диспетчер
 dp = Dispatcher()
 
+
+@dp.message(Command("menu"))
+async def start_handler(message: types.Message):
+    await message.answer(text.greet.format(name=message.from_user.full_name), reply_markup=kb.menu)
+
+@dp.message(F.text == "Меню")
+@dp.message(F.text == "Выйти в меню")
+@dp.message(F.text == "◀️ Выйти в меню")
+async def menu(message: types.Message):
+    await message.answer(text.menu, reply_markup=kb.menu)
+
+
 # Хэндлер на команду /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.answer("Привет меня зовут !лучший бот Данила!я умею разговаритвать и занимать твое время.Пиши команды :/мячик , /дароу , /гениальные_новости_нск , /казино ,/дартс , /бовлинг , /кино")
-    
+    await message.answer("Привет меня зовут !лучший бот Данила!я умею разговаритвать и занимать твое время.Пиши команды :\n/мячик , /дароу , /гениальные_новости_нск , /казино ,/дартс , /бовлинг , /кино , /деньги , /твич , /кубик , /реальные деньги , /random_value , /random10")
+
+@dp.callback_query(F.data == "ball")
+async def cmd_dice(callback: types.CallbackQuery):
+   await callback.message.answer_dice(emoji=DiceEmoji.FOOTBALL)
+
 # Хэндлер на команду /start
-@dp.message(Command("мячик"))
-async def cmd_dice(message: types.Message):
-    await message.answer_dice(emoji=DiceEmoji.FOOTBALL)
+# @dp.message(Command("мячик"))
+# async def cmd_dice(message: types.Message):
+#     await message.answer_dice(emoji=DiceEmoji.FOOTBALL)
 
 @dp.message(Command("дароу"))
 async def cmd_test1(message: types.Message):
@@ -32,21 +51,21 @@ async def cmd_test1(message: types.Message):
 #     await message.answer_dice(emoji=DiceEmoji.BASKETBALL)
     
     
-@dp.message(Command("гениальные_новости_нск"))
-async def cmd_dice(message: types.Message):
-    await message.answer('t.me/novostinskrf')
+@dp.callback_query(F.data == "new")
+async def cmd_new(callback: types.CallbackQuery):
+   await callback.message.answer('t.me/novostinskrf')
     
-@dp.message(Command("кино"))
-async def cmd_dice(message: types.Message):
-    await message.answer('https://www.kinopoisk.ru/?utm_referrer=wylsa.com')
+@dp.callback_query(F.data == "k")
+async def cmd_new(callback: types.CallbackQuery):
+   await callback.message.answer('https://www.kinopoisk.ru/?utm_referrer=wylsa.com')
     
-@dp.message(Command("деньги"))
-async def cmd_dice(message: types.Message):
-    await message.answer('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+@dp.callback_query(F.data == "m")
+async def cmd_new(callback: types.CallbackQuery):
+   await callback.message.answer('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
     
-@dp.message(Command("реальные_деньги"))
-async def cmd_dice(message: types.Message):
-    await message.answer('https://www.youtube.com/watch?v=XqZsoesa55w')
+@dp.callback_query(F.data == "r")
+async def cmd_new(callback: types.CallbackQuery):
+   await callback.message.answer('https://www.youtube.com/watch?v=XqZsoesa55w')
     
 @dp.message(Command("Твич"))
 async def cmd_dice(message: types.Message):
@@ -56,13 +75,13 @@ async def cmd_dice(message: types.Message):
 async def cmd_dice(message: types.Message):
     await message.answer_dice(emoji=DiceEmoji.SLOT_MACHINE)
     
-@dp.message(Command("дартс"))
-async def cmd_dice(message: types.Message):
-    await message.answer_dice(emoji=DiceEmoji.DART)
+@dp.callback_query(F.data == "l")
+async def cmd_new(callback: types.CallbackQuery):
+   await callback.message.answer_dice(emoji=DiceEmoji.DART)
     
-@dp.message(Command("бовлинг"))
-async def cmd_dice(message: types.Message):
-    await message.answer_dice(emoji=DiceEmoji.BOWLING)
+@dp.callback_query(F.data == "b")
+async def cmd_new(callback: types.CallbackQuery):
+   await callback.message.answer_dice(emoji=DiceEmoji.BOWLING)
 
 # Хэндлер на команду /test2
 @dp.message(Command("занят?"))
@@ -74,9 +93,9 @@ async def cmd_test2(message: types.Message):
 # Запуск процесса поллинга новых апдейтов
 async def main():
     await dp.start_polling(bot)
-@dp.message(Command("кубик"))
-async def cmd_dice(message: types.Message):
-    await message.answer_dice(emoji="🎲")
+@dp.callback_query(F.data == "h")
+async def cmd_dice(callback: types.CallbackQuery):
+   await callback.message.answer_dice(emoji="🎲")
 
 @dp.message(Command("random10"))
 async def cmd_random(message: types.Message):
@@ -129,6 +148,6 @@ async def with_puree(message: types.Message):
 @dp.message(F.text.lower() == "вк")
 async def with_puree(message: types.Message):
     await message.reply("https://vk.com/")
-
+    
 if __name__ == "__main__":
     asyncio.run(main())
